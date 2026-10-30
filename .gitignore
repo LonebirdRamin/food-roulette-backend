@@ -22,3 +22,13 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Maven build output and local configuration
+/target/
+.env
+.env.*
+!.env.example
+
+# Local project planning and agent guidance
+/PROJECT_PLAN.md
+/AGENTS.md
