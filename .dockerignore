@@ -1,0 +1,7 @@
+.git
+.idea
+.env
+.env.*
+AGENTS.md
+PROJECT_PLAN.md
+target

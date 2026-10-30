@@ -1,6 +1,6 @@
 # Food Roulette backend
 
-The backend is a Java 21 application built with Spring Boot and Maven. In Phase 2 it provides one endpoint to check whether the server is running.
+The backend is a Java 21 application built with Spring Boot and Maven. It provides a health endpoint and a Google Places restaurant search.
 
 ## Requirements
 
@@ -44,7 +44,7 @@ Stop the server with Ctrl+C in the terminal where it is running. This endpoint c
 ./mvnw package
 ```
 
-Maven writes the packaged application to `target/`. Restaurant search and external integrations are planned for later phases; they are not implemented yet.
+Maven writes the packaged application to `target/`.
 
 ## Restaurant search (Phase 5)
 
@@ -60,4 +60,11 @@ curl -X POST http://localhost:8080/api/restaurants/search \
   -d '{"menuName":"ผัดไทย","latitude":13.7563,"longitude":100.5018,"radiusMeters":5000}'
 ```
 
-The location above is a sample location in Bangkok. Use your intended coordinates when testing. Responses contain real Google Places data only when a valid key is configured. A missing key returns 503; invalid inputs return 400. The app does not yet display these results. When results are displayed, include required Google Maps and third-party attribution from the response, and follow the current Places API policies.
+The location above is a sample location in Bangkok. Use your intended coordinates when testing. Responses contain real Google Places data only when a valid key is configured. A missing key returns 503; invalid inputs return 400. The frontend displays these results with Google Maps and any returned third-party attribution. Follow the current Places API policies when changing how results are displayed.
+
+
+## Deployment on Render
+
+Render does not offer a native Java runtime; the included Dockerfile builds with Java 21 and runs the resulting JAR. Create a Docker web service from this repository and set `GOOGLE_MAPS_API_KEY` in Render's environment settings. Set the health check path to `/api/health`. Render supplies `PORT`, which Spring Boot reads; locally it defaults to 8080. Never include the key in the Dockerfile or repository.
+
+The backend needs an HTTPS URL reachable from the Next.js server. Set the frontend's `BACKEND_API_URL` to that URL without a trailing path. The restaurant endpoint can incur Google API charges; configure appropriate Google API restrictions, usage quotas, and billing alerts before exposing it.
